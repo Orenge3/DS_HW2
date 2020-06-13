@@ -13,34 +13,111 @@
 #include "MusicManager.h"
 //assume invalid input handled for all functions
 StatusType MusicManager::AddArtist(int artistID) {
-
-
-
-    return FAILURE;
+    Artist *newArtist =new Artist(artistID);
+    return this->artistTable.Insert(newArtist)==HASH_SUCCESS ? SUCCESS : FAILURE;
 }
 
 StatusType MusicManager::RemoveArtist(int artistID) {
-    return FAILURE;
+    Artist *uArtist;
+    uArtist=this->artistTable.find(artistID);
+
+    if(uArtist== nullptr)
+        return FAILURE;
+    if(!uArtist->GetSongIdTree()->IsEmpty())
+        return FAILURE;
+
+    this->artistTable.Delete(uArtist);
+
+    return SUCCESS;
 }
 
 StatusType MusicManager::AddSong(int artistID, int songID) {
-    return FAILURE;
+    Song *newSong=new Song(artistID,songID);
+
+    Artist *uArtist;
+    uArtist=this->artistTable.find(artistID);
+    if(uArtist== nullptr){
+        delete(newSong);
+        return FAILURE;
+    }
+
+    if(uArtist->GetSongIdTree()->Insert(songID,newSong)!=AVL_SUCCESS) {
+        delete(newSong);
+        return FAILURE;
+    }
+    uArtist->GetSongStreamTree()->Insert(*newSong,newSong);
+    this->allSongsTree->Insert(*newSong,newSong);
+    uArtist->SetBestSong(newSong);
+    delete(newSong);
+    return SUCCESS;
 }
 
 StatusType MusicManager::RemoveSong(int artistID, int songID) {
-    return FAILURE;
+    Song *songToDelete=new Song(artistID,songID);
+    Artist *uArtist;
+    uArtist=this->artistTable.find(artistID);
+    if(uArtist== nullptr){
+        delete(songToDelete);
+        return FAILURE;
+    }
+    if(uArtist->GetSongIdTree()->Find(songID,songToDelete)!=AVL_SUCCESS) {
+        delete(songToDelete);
+        return FAILURE;
+    }
+    uArtist->GetSongStreamTree()->Delete(*songToDelete);
+    uArtist->GetSongIdTree()->Delete(songID);
+    this->allSongsTree->Delete(*songToDelete);
+    if(songToDelete==uArtist->GetBestSong()) uArtist->FindNewBestSong();
+    delete(songToDelete);
+    return SUCCESS;
 }
 
 StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
-    return FAILURE;
+    Song *songToImprove=new Song(artistID,songID);
+    Artist *uArtist;
+    uArtist=this->artistTable.find(artistID);
+    if(uArtist== nullptr){
+        delete(songToImprove);
+        return FAILURE;
+    }
+    if(uArtist->GetSongIdTree()->Find(songID,songToImprove)!=AVL_SUCCESS) {
+        delete(songToImprove);
+        return FAILURE;
+    }
+
+    uArtist->GetSongStreamTree()->Delete(*songToImprove);
+    allSongsTree->Delete(*songToImprove);
+
+    songToImprove->AddNumOfStreams(count);
+
+    uArtist->GetSongStreamTree()->Insert(*songToImprove,songToImprove);
+    allSongsTree->Insert(*songToImprove,songToImprove);
+
+    uArtist->SetBestSong(songToImprove);
+    delete(songToImprove);
+    return SUCCESS;
 }
 
 StatusType
 MusicManager::GetArtistBestSong(int artistID, int *songID) {
-    return FAILURE;
+    Artist *uArtist;
+    uArtist=this->artistTable.find(artistID);
+    if(uArtist== nullptr){
+        return FAILURE;
+    }
+    *songID=uArtist->GetBestSong()->GetSongID();
+    return SUCCESS;
 }
 
 StatusType
 MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
-    return FAILURE;
+    Song *rankedSong = nullptr;
+    try{
+        *rankedSong = allSongsTree->GetRankedObject(rank);
+    }catch (AVLTree<Song*,Song>::bad_rank& e){
+        return FAILURE;
+    }
+    *artistId=rankedSong->GetPerformer();
+    *songId=rankedSong->GetSongID();
+    return SUCCESS;
 }
