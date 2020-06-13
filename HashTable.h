@@ -24,6 +24,7 @@ class HashTable{ //double HASH Table
 private:
     int tableSize;
     int numOfElements;
+    int deletedElements;
     T* table;
     void ReallocateTable();
     int hash1Func(int itemId);
@@ -34,6 +35,7 @@ private:
     bool isQuarterFull(){
         return (tableSize/4 == numOfElements);
     }
+    void ReHash();
 public:
     explicit HashTable(int size);
     ~HashTable() = default;
@@ -55,6 +57,9 @@ HashTable<T>::HashTable(int size) {
 
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
+    if (item == NULL){
+        return HASH_INVALID_INPUT;
+    }
     int index = hash1Func(*item);
     if (table[index] != NULL){ //collision occurs
         if (table[index] == item){
@@ -90,6 +95,9 @@ HASH_RESULT HashTable<T>::Delete(T item) {
     if (res != NULL){
         table[*item] = DELETED;
         delete item;
+        numOfElements--;
+        deletedElements++;
+        ReallocateTable();
         return HASH_SUCCESS;
     }
     return HASH_FAILURE;
@@ -142,6 +150,9 @@ void HashTable<T>::ReallocateTable() {
         tableSize /= 2;
     }
     if (oldTableSize == tableSize){
+        if (deletedElements == numOfElements){
+            this->ReHash();
+        }
         return;
     }
     T* newTable = new T[tableSize]();
@@ -154,6 +165,23 @@ void HashTable<T>::ReallocateTable() {
         table[i] = NULL;
     }
     delete [] oldTable;
+}
+
+template<class T>
+void HashTable<T>::ReHash() {
+    T* temp = new T[tableSize]();
+    for (int i = 0; i < tableSize; ++i) {
+        temp[i] =table[i];
+        table[i] = NULL;
+    }
+    for (int j = 0; j < tableSize; ++j) {
+        if (temp[j] == DELETED || temp[j] == NULL){
+            continue;
+        } else{
+            this->Insert(temp[j]);
+        }
+    }
+
 }
 
 
