@@ -9,13 +9,14 @@ using std::cout;
 using std::ostream;
 using std::endl;
 #define PRIME 3
+#define DELETED -1
 #define INIT_SIZE
 typedef enum {
     HASH_SUCCESS = 0,
     HASH_FAILURE = -1,
     HASH_ALLOCATION_ERROR = -2,
     HASH_INVALID_INPUT = -3,
-    HASH_NODE_NOT_FOUND=-4,
+    HASH_ITEM_NOT_FOUND=-4,
     HASH_EMPTY=-5
 } HASH_RESULT;
 template<class T>
@@ -24,9 +25,9 @@ private:
     int tableSize;
     int numOfElements;
     T* table;
-    void ReallocTable();
-    int hash1Func(T item);
-    int hash2Func(T item);
+    void ReallocateTable();
+    int hash1Func(int itemId);
+    int hash2Func(int itemId);
     bool isFull(){
         return (tableSize == numOfElements);
     }
@@ -40,7 +41,6 @@ public:
     HASH_RESULT Delete(T item);
     T find(int itemId);
     void displayHash();
-    friend ostream& operator<<(ostream& os, const T& item);
 };
 
 template<class T>
@@ -55,77 +55,105 @@ HashTable<T>::HashTable(int size) {
 
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
-    int index = hash1Func(item);
+    int index = hash1Func(*item);
     if (table[index] != NULL){ //collision occurs
-        int index2 = hash2Func(item);
+        if (table[index] == item){
+            return HASH_FAILURE;
+        }
+        int index2 = hash2Func(*item);
         int i = 1;
         while (true){//get NewIndex
-            int newIndex = (index+i*index2) % tableSize;
+            int newIndex = (index + i * index2) % tableSize;
             if (table[newIndex] == NULL){
                 table[newIndex] = item;
                 break;
             }
+            if (table[newIndex] == item){
+                return HASH_FAILURE;
+            }
             i++;
         }
-    } else //no collision
-    table[index] = item;
-    numOfElements++;
-    this->ReallocTable();
-
+    }else{//no collision
+        table[index] = item;
+        numOfElements++;
+        this->ReallocateTable();
+        return HASH_SUCCESS;
+    }
 }
 
 template<class T>
 HASH_RESULT HashTable<T>::Delete(T item) {
+    if (item == NULL){
+        return HASH_INVALID_INPUT;
+    }
+    T res = this->find(*item);
+    if (res != NULL){
+        table[*item] = DELETED;
+        delete item;
+        return HASH_SUCCESS;
+    }
+    return HASH_FAILURE;
 
 }
 
 template<class T>
 T HashTable<T>::find(int itemId) {
-    return nullptr;
+    int index1 = hash1Func(itemId);
+    int index2 = hash2Func(itemId);
+    int i = 0;
+    while (table[(index1 + i * index2) % tableSize] != itemId){
+        if (table[(index1 + i * index2) % tableSize] == NULL){
+            return NULL;
+        }
+        i++;
+    }
+    return table[(index1 + i * index2) % tableSize];
 }
 
 template<class T>
-int HashTable<T>::hash1Func(T item) {
-    return *item % tableSize;
+int HashTable<T>::hash1Func(int itemId) {
+    return itemId % tableSize;
 }
 
 template<class T>
-int HashTable<T>::hash2Func(T item) {
-    return 1+(*item % tableSize-PRIME);
+int HashTable<T>::hash2Func(int itemId) {
+    return 1+(itemId % tableSize - PRIME);
 }
 
 template<class T>
 void HashTable<T>::displayHash() {
     for (int i = 0; i < tableSize ; ++i) {
-        cout << table[i] << endl;
+        if (table[i] != NULL){
+            cout << i << "-->" <<table[i] << endl;
+        } else
+            cout << i << endl;
     }
 
-}
-
-ostream &operator<<(ostream &os, const T &item) {
-    cout << "printing table:" <<endl;
-    return os
 }
 
 template<class T>
-void HashTable<T>::ReallocTable() {
-    int newTableSize = 0;
+void HashTable<T>::ReallocateTable() {
+    int oldTableSize = tableSize;
+    T* oldTable = table;
     if (isFull()){
-        newTableSize = tableSize*2;
+        tableSize *= 2;
     }
     if (isQuarterFull()){
-        newTableSize = tableSize/2;
+        tableSize /= 2;
     }
-    if (newTableSize == 0){
+    if (oldTableSize == tableSize){
         return;
     }
-    T* newTable = new T[newTableSize]();
-    for (int i = 0; i< tableSize ; ++i) {
-        newTable[hashFunc(*table[i])]= table[i];
-    }
-    tableSize = newTableSize;
-    delete [] table;
+    T* newTable = new T[tableSize]();
+    newTable->tableSize = tableSize;
     table = newTable;
+    for (int i = 0; i< oldTableSize ; ++i) {
+        if (oldTable[i] != NULL && oldTable[i] != DELETED){
+            this->Insert(oldTable[i]);
+        }
+        table[i] = NULL;
+    }
+    delete [] oldTable;
 }
 
 
