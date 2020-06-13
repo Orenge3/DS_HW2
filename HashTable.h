@@ -19,7 +19,7 @@ typedef enum {
     HASH_EMPTY=-5
 } HASH_RESULT;
 template<class T>
-class HashTable{
+class HashTable{ //double HASH Table
 private:
     int tableSize;
     int numOfElements;
@@ -27,6 +27,12 @@ private:
     void ReallocTable();
     int hash1Func(T item);
     int hash2Func(T item);
+    bool isFull(){
+        return (tableSize == numOfElements);
+    }
+    bool isHalfEmpty(){
+        return (tableSize/2 == numOfElements);
+    }
 public:
     explicit HashTable(int size);
     ~HashTable() = default;
@@ -41,7 +47,7 @@ template<class T>
 HashTable<T>::HashTable(int size) {
     tableSize = size;
     numOfElements = 0;
-    table = new T*[tableSize]();
+    table = new T[tableSize]();
     for (int i = 0; i < tableSize ; ++i) {
         table[i] = NULL;
     }
@@ -92,10 +98,10 @@ ostream &operator<<(ostream &os, const T &item) {
 template<class T>
 void HashTable<T>::ReallocTable() {
     int newTableSize = 0;
-    if (numOfElements == tableSize){
+    if (isFull()){
         newTableSize = tableSize*2;
     }
-    if (numOfElements == tableSize/2){
+    if (isHalfEmpty()){
         newTableSize = tableSize/2;
     }
     if (newTableSize == 0){
