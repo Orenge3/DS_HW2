@@ -13,25 +13,27 @@
 
 #ifndef INC_1W_DS_DC_H
 #define INC_1W_DS_DC_H
-#include "DS_AVL.h"
-#include "library1.h"
-#include "DLLIST.h"
+//#include "DS_AVL.h"
+#include "library2.h"
 #include "Artist.h"
 
 
 class MusicManager{
 private:
-    DLList<AVLTree<Artist*>> charts;
-    AVLTree<Artist*> artist_tree;
-    int totalNumOfSongs;
+//TODO add structures and implement functions
+    // add Hash table of artists
+    AVLTree<Song*,Song>* ChartsTree; //by numOfStreams
 public:
     MusicManager() = default;
     ~MusicManager() = default;
-    StatusType AddArtist(int artistID, int numOfSongs);
+    StatusType AddArtist(int artistID);
     StatusType RemoveArtist(int artistID);
-    StatusType AddToSongCount(int artistID, int songID);
-    StatusType NumberOfStreams(int artistID, int songID, int *streams);
-    StatusType GetRecommendedSongs(int numOfSongs, int* artist, int* songs);
+    StatusType AddSong(int artistID ,int songID);
+    StatusType RemoveSong(int artistID ,int songID);
+    StatusType AddToSongCount(int artistID, int songID, int count);
+    StatusType GetArtistBestSong(int artistID, int *songID);
+    StatusType GetRecommendedSongInPlace(int rank, int *artistId, int *songId);
+
 
 };
 

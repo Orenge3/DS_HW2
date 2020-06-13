@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h">
+		<Unit filename="C:/Technion/Projects/Clion_Projects/DataStructs/HW2/HashTable.h">
 			<Option target="HW2"/>
 		</Unit>
 		<Unit filename="C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.cpp">

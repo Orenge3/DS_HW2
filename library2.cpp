@@ -1,55 +1,107 @@
 /****************************************************************************/
 /*                                                                          */
 /* This file contains the implementation of functions                       */
-/* you should use for the wet ex 1                                          */
+/* you should use for the wet ex 2                                          */
 /*                                                                          */
 /****************************************************************************/
 
 /****************************************************************************/
 /*                                                                          */
-/* File Name : library1.cpp                                                 */
+/* File Name : library2.cpp                                                 */
 /*                                                                          */
 /****************************************************************************/
 
 
-#include "library1.h"
+#include <clocale>
+#include <new>
+#include "library2.h"
 #include "MusicManager.h"
+using namespace std;
 
 void *Init() {
-    MusicManager *DS = new MusicManager();
+    MusicManager *DS;
+    try {
+        DS = new MusicManager();
+    }
+    catch (const std::bad_alloc& e) {
+        return NULL;
+    }
     return (void*)DS;
+
 }
 
-StatusType AddArtist(void *DS, int artistID, int numOfSongs) {
-    if (artistID <= 0 || DS == NULL || numOfSongs<=0) {//parameter check
-        return INVALID_INPUT;
+StatusType AddArtist(void *DS, int artistID) {
+    if (artistID <= 0 || DS == NULL) return INVALID_INPUT;
+    try {
+        return ((MusicManager *) DS)->AddArtist(artistID);
     }
-    return ((MusicManager*)DS)->AddArtist(artistID,numOfSongs);
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
 
 }
 
 StatusType RemoveArtist(void *DS, int artistID) {
-    if (DS == nullptr || artistID <= 0) return INVALID_INPUT;
-    return ((MusicManager *) DS)->RemoveArtist(artistID);
+    if (DS == NULL || artistID <= 0) return INVALID_INPUT;
+    try {
+        return ((MusicManager *) DS)->RemoveArtist(artistID);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
 }
 
-StatusType AddToSongCount(void *DS, int artistID, int songID) {
-    if (DS == NULL || songID < 0 || artistID <= 0) return INVALID_INPUT;
-    return ((MusicManager *) DS)->AddToSongCount(artistID, songID);
+StatusType AddSong(void *DS, int artistID, int songID) {
+    if (DS == NULL || artistID <= 0 || songID <= 0) return INVALID_INPUT;
+    try {
+        return ((MusicManager*)DS)->AddSong(artistID, songID);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
 }
 
-StatusType NumberOfStreams(void *DS, int artistID, int songID, int *streams) {
-    if (songID < 0 || DS == NULL || artistID <= 0 || streams == NULL) return INVALID_INPUT;
-    return ((MusicManager *) DS)->NumberOfStreams(artistID, songID, streams);
+StatusType RemoveSong(void *DS, int artistID, int songID) {
+    if (DS == NULL || artistID <= 0 || songID <= 0) return INVALID_INPUT;
+    try {
+        return ((MusicManager*)DS)->RemoveSong(artistID, songID);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
+}
 
+StatusType AddToSongCount(void *DS, int artistID, int songID, int count) {
+    if (DS == NULL || songID < 0 || artistID <= 0 || count <= 0) return INVALID_INPUT;
+    try {
+        return ((MusicManager *) DS)->AddToSongCount(artistID, songID, 0);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
+}
+
+
+StatusType GetArtistBestSong(void *DS, int artistID, int *songId) {
+    if (DS == NULL || artistID <= 0 || songId == NULL) return INVALID_INPUT;
+    try {
+        return ((MusicManager *) DS)->GetArtistBestSong(artistID, songId);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
 }
 
 StatusType
-GetRecommendedSongs(void *DS, int numOfSongs, int *artists, int *songs) {
-    if (DS == nullptr || numOfSongs <= 0) return INVALID_INPUT;
-    return ((MusicManager*)DS)->GetRecommendedSongs(numOfSongs, artists, songs);
+GetRecommendedSongInPlace(void *DS, int rank, int *artistId, int *songId) {
+    if (DS == NULL || rank <= 0 || artistId == NULL || songId == NULL) return INVALID_INPUT;
+    try {
+        return ((MusicManager *) DS)->GetRecommendedSongInPlace(rank ,artistId, songId);
+    }
+    catch (const std::bad_alloc& e) {
+        return ALLOCATION_ERROR;
+    }
 }
-
 void Quit(void **DS) {//implement for real
     *DS = nullptr;
 }

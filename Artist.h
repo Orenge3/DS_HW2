@@ -3,6 +3,11 @@
 #ifndef INC_1W_ARTIST_H
 #define INC_1W_ARTIST_H
 #include "DS_AVL.h"
+#include <ostream>
+
+using std::ostream;
+using std::endl;
+
 const int ZERO_STREAMS = 0;
 class Song{
     int artistID;
@@ -14,43 +19,87 @@ public:
     Song(int performer,int songID):artistID(performer),songID(songID)
             ,numOfStreams(ZERO_STREAMS),pointerToCharts(NULL){};
     ~Song()=default;
-    int GetPerformer(){return artistID;}
-    int GetSongID(){return songID;}
-    int GetNumOfStreams(){return numOfStreams;}
+    int GetPerformer() const {return artistID;}
+    int GetSongID() const {return songID;}
+    int GetNumOfStreams() const {return numOfStreams;}
     void IncNumOfStreams(){ numOfStreams++;}
     void SetPointerToCharts(void * address){pointerToCharts= address;}
     void * GetPointerToCharts(){return pointerToCharts;}
+    bool operator==(const Song& song1) const {
+        return numOfStreams == song1.numOfStreams && songID == song1.songID
+               && artistID == song1.artistID;
+    }
+    bool operator!=(const Song& song1) const{
+        return !(*this == song1);
+    }
+    bool operator>(const Song& song1) const{ //by num of streams.
+        if (*this == song1){
+            return false;
+        }
+        if (numOfStreams > song1.numOfStreams){
+            return true;
+        }
+        if (numOfStreams == song1.numOfStreams){
+            if (artistID < song1.artistID){
+                return true;
+            }
+            if (artistID == song1.artistID){
+                return songID < song1.songID;
+            }
+            return false;
+        }
+        return false;
+    }
+    bool operator<(const Song& song1) const{
+        return !(*this > song1) && !(*this == song1);
+    }
+    Song& operator=(const Song& song1){
+        if (this != &song1){
+            songID = song1.songID;
+            artistID = song1.artistID;
+            numOfStreams = song1.numOfStreams;
+        }
+        return *this;
+    }
+    friend ostream& operator<<(ostream& os, const Song& toPrint){
+        return os << "printing Song" << endl
+        << "performer:" << toPrint.GetPerformer()<< endl
+        << "songID:" << toPrint.GetSongID() << endl
+        << "numberOfStream:" << toPrint.GetNumOfStreams() << endl;
+    }
 };
 class Artist {
 private:
     int artistID;
     int numOfSongs;
-    AVLTree<Song*>* songTree;
-    Song* songArray;
+    Song* BestSong;
+    AVLTree<Song*,int>* songIDTree; //by ID
+    AVLTree<Song*,Song>* songStreamTree; //by numOfStreams
 
 public:
     Artist() = default;
     Artist(int performer, int numOfSongs = 0):
             artistID(performer),numOfSongs(numOfSongs){
-        songTree = new AVLTree<Song*>();
+        songIDTree = new AVLTree<Song*,int>();
         if (numOfSongs != 0){
-            songArray = new Song[numOfSongs]();
+            songStreamTree = new Song[numOfSongs]();
         }
         if (numOfSongs == 0 ) {
-            songArray = nullptr;
+            songStreamTree = nullptr;
         }
         for (int i = 0; i < numOfSongs; ++i) {
             Song* songIncharts = new Song(performer,i);
             Song* songInArray = new Song(performer,i);
-            songTree->Insert(i,songIncharts);
-            songArray[i] = *songInArray;
+            songIDTree->Insert(i, songIncharts);
+            songStreamTree[i] = *songInArray;
         }
     };
     ~Artist()=default;
     int GetArtistID(){return artistID;}
     int GetArtistNumOfSongs(){return numOfSongs;}
-    AVLTree<Song*>* GetSongTree(){return songTree;}
-    Song* GetSongArray(){return songArray;}
+    AVLTree<Song*>* GetSongTree(){return songIDTree;}
+    Song* GetSongArray(){return songStreamTree;}
+    int operator*() const {return artistID;}
 
 
 };

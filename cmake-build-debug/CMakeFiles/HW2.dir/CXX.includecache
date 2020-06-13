@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp
+clocale
+-
+new
+-
+library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+MusicManager.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+
