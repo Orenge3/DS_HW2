@@ -13,6 +13,9 @@
 #include "MusicManager.h"
 //assume invalid input handled for all functions
 StatusType MusicManager::AddArtist(int artistID) {
+
+
+
     return FAILURE;
 }
 
