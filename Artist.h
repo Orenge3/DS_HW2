@@ -22,6 +22,7 @@ public:
     int GetPerformer() const {return artistID;}
     int GetSongID() const {return songID;}
     int GetNumOfStreams() const {return numOfStreams;}
+    void AddNumOfStreams(int count);
     void IncNumOfStreams(){ numOfStreams++;}
     void SetPointerToCharts(void * address){pointerToCharts= address;}
     void * GetPointerToCharts(){return pointerToCharts;}
@@ -68,6 +69,11 @@ public:
         << "numberOfStream:" << toPrint.GetNumOfStreams() << endl;
     }
 };
+
+void Song::AddNumOfStreams(int count) {
+    this->numOfStreams+=count;
+}
+
 class Artist {
 private:
     int artistID;
@@ -97,12 +103,27 @@ public:
     ~Artist()=default;
     int GetArtistID(){return artistID;}
     int GetArtistNumOfSongs(){return numOfSongs;}
-    AVLTree<Song*>* GetSongTree(){return songIDTree;}
-    Song* GetSongArray(){return songStreamTree;}
+    void SetBestSong(Song* songToCheck);
+    const Song* GetBestSong();
+    AVLTree<Song*,int>* GetSongIdTree(){return songIDTree;}
+    AVLTree<Song*,Song>* GetSongStreamTree(){return songStreamTree;}
     int operator*() const {return artistID;}
 
 
+    void FindNewBestSong();
 };
 
+void Artist::SetBestSong(Song *songToCheck) {
+    if(*songToCheck>*(this->BestSong)) {
+        *BestSong = *songToCheck;
+    }
+}
+const Song* Artist::GetBestSong() {
+    return this->BestSong;
+}
+
+void Artist::FindNewBestSong() {
+    (this->BestSong)=*(this->GetSongStreamTree()->FindBiggestObject());
+}
 
 #endif //INC_1W_ARTIST_H

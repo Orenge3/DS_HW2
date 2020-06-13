@@ -23,6 +23,7 @@ typedef int sideHeightInt;
 template <class T, class ID>
 class AVLTree{
 private:
+
     class node{
 
     public:
@@ -60,7 +61,9 @@ private:
         int printTreeInorderRecursion(int numberOfNodesToPrint, node* nodeToPrint);
         ID findRankedNodeRecursion(int rank, int parentRank, node* currentNode);
     };
+
     int treeSize=0;
+    node* biggestNode=nullptr;
     node* smallestNode= nullptr;
     node* treeEntry= nullptr;
 public:
@@ -73,7 +76,13 @@ public:
     void ObserveTree();
     ID GetRankedObject(int rank);
     int PrintTreeInorderFast(int numberOfNodesToPrint);
+    const T* FindBiggestObject();
 
+    class bad_rank : public exception{
+        const char * what() const throw () override{
+            return "AVL_Error: rank is not natural number or it is bigger than size of tree!)";
+        }
+    };
 };
 
 
@@ -93,7 +102,7 @@ AVL_RESULT AVLTree<T,ID>::Find(ID objectID, T& data) {
 
 template <class T, class ID>
 ID AVLTree<T,ID>::GetRankedObject(int rank) {
-    if (rank<1 || rank>treeSize) throw std::runtime_error("AVL_Error: rank is not natural number or it is bigger than size of tree!");
+    if (rank<1 || rank>treeSize) throw bad_rank();
     return this->treeEntry->findRankedNodeRecursion(rank, 0, this->treeEntry);
 
 }
@@ -363,6 +372,18 @@ int AVLTree<T,ID>::PrintTreeInorderFast(int numberOfNodesToPrint) {
 template <class T, class ID>
 bool AVLTree<T,ID>::IsEmpty() {
     return this->treeEntry== nullptr;
+}
+
+template<class T, class ID>
+const T* AVLTree<T, ID>::FindBiggestObject() {
+    node* nodeIterator=this->treeEntry;
+    if((this->treeEntry)!=NULL){
+        while(nodeIterator->rightChild!=NULL){
+            nodeIterator=nodeIterator->rightChild;
+        }
+    }else nodeIterator= nullptr;
+    if(nodeIterator!= nullptr) return nodeIterator->_data;
+    return NULL;
 }
 
 template <class T, class ID>

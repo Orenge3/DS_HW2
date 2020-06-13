@@ -13,16 +13,18 @@
 
 #ifndef INC_1W_DS_DC_H
 #define INC_1W_DS_DC_H
-//#include "DS_AVL.h"
+#include "DS_AVL.h"
 #include "library2.h"
 #include "Artist.h"
-
+#include "HashTable.h"
 
 class MusicManager{
 private:
 //TODO add structures and implement functions
     // add Hash table of artists
-    AVLTree<Song*,Song>* ChartsTree; //by numOfStreams
+    AVLTree<Song*,Song>* allSongsTree; //by numOfStreams
+    HashTable<Artist*> artistTable;
+
 public:
     MusicManager() = default;
     ~MusicManager() = default;
