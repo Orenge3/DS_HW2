@@ -10,56 +10,65 @@ using std::ostream;
 using std::endl;
 
 template<class T>
-class hashTable{
+class HashTable{
 private:
     int tableSize;
     int numOfElements;
     T* table;
+    void ReallocTable();
+    int hash1Func(T *item);
+    int hash2Func(T *item);
 public:
-    explicit hashTable(int size);
-    ~hashTable() = default;
-    void  Insert(T* item, int itemId);
+    explicit HashTable(int size);
+    ~HashTable() = default;
+    void Insert(T *item);
     void Delete(T* item);
     T* find(int itemId);
-    int hashFunc(T *item);
     void displayHash();
-    void ReallocTable();
     friend ostream& operator<<(ostream& os, const T& item);
 };
 
 template<class T>
-hashTable<T>::hashTable(int size) {
+HashTable<T>::HashTable(int size) {
     tableSize = size;
     numOfElements = 0;
     table = new T*[tableSize]();
+    for (int i = 0; i < tableSize ; ++i) {
+        table[i] = NULL;
+    }
 }
 
 template<class T>
-void hashTable<T>::Insert(T *item, int itemId) {
+void HashTable<T>::Insert(T *item) {
+    int index = hashFunc(item);
+    table[index] = item;
     numOfElements++;
     this->ReallocTable();
-    int key = hashFunc(itemId);
-    table[key] = item;
 
 }
 
 template<class T>
-void hashTable<T>::Delete(T *item) {
+void HashTable<T>::Delete(T *item) {
 
 }
 
 template<class T>
-T *hashTable<T>::find(int itemId) {
+T *HashTable<T>::find(int itemId) {
     return nullptr;
 }
 
 template<class T>
-int hashTable<T>::hashFunc(T *item) {
-    return 0;
+int HashTable<T>::hash1Func(T *item) {
+    return *item % tableSize;
 }
 
 template<class T>
-void hashTable<T>::displayHash() {
+int HashTable<T>::hash2Func(T *item) {
+    return *item;
+}
+
+template<class T>
+void HashTable<T>::displayHash() {
     for (int i = 0; i < tableSize ; ++i) {
         cout << table[i] << endl;
     }
@@ -67,23 +76,30 @@ void hashTable<T>::displayHash() {
 }
 
 ostream &operator<<(ostream &os, const T &item) {
-    return <#initializer#>;
+    cout << "printing table:" <<endl;
+    displayHash();
+    return os
 }
 
 template<class T>
-void hashTable<T>::ReallocTable() {
+void HashTable<T>::ReallocTable() {
+    int newTableSize = 0;
     if (numOfElements == tableSize){
-        T* newTable;
-        newTable = new T[2*tableSize]();
-        for (int i = 0; i< tableSize ; ++i) {
-            hashFunc(*table[i]);
-            newTable[]
-        }
-
+        newTableSize = tableSize*2;
     }
     if (numOfElements == tableSize/2){
-
+        newTableSize = tableSize/2;
     }
+    if (newTableSize == 0){
+        return;
+    }
+    T* newTable = new T[newTableSize]();
+    for (int i = 0; i< tableSize ; ++i) {
+        newTable[hashFunc(*table[i])]= table[i];
+    }
+    tableSize = newTableSize;
+    delete [] table;
+    table = newTable;
 }
 
 
