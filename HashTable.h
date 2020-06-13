@@ -42,7 +42,7 @@ public:
     ~HashTable() = default;
     HASH_RESULT Insert(T item);
     HASH_RESULT Delete(T item);
-    T find(int itemId);
+    T find(int itemId, int *rIndex =NULL);
     void displayHash();
 };
 
@@ -92,21 +92,24 @@ HASH_RESULT HashTable<T>::Delete(T item) {
     if (item == NULL){
         return HASH_INVALID_INPUT;
     }
-    T res = this->find(*item);
+    int* index = new int ();
+    T res = this->find(*item, index);
     if (res != NULL){
-        *table[*item] = DELETED;
-        delete item;
+        delete res;
+        *table[*index] = DELETED;
+        delete index;
         numOfElements--;
         deletedElements++;
         ReallocateTable();
         return HASH_SUCCESS;
     }
+    delete index;
     return HASH_FAILURE;
 
 }
 
 template<class T>
-T HashTable<T>::find(int itemId) {
+T HashTable<T>::find(int itemId, int *rIndex) {
     int index1 = hash1Func(itemId);
     int index2 = hash2Func(itemId);
     int i = 0;
@@ -119,6 +122,7 @@ T HashTable<T>::find(int itemId) {
             }
             i++;
         }
+        *rIndex = (index1 + i * index2) % tableSize;
         return table[(index1 + i * index2) % tableSize];
     }
     return NULL;
