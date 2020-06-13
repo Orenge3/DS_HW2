@@ -8,7 +8,16 @@
 using std::cout;
 using std::ostream;
 using std::endl;
-
+#define PRIME 3
+#define INIT_SIZE
+typedef enum {
+    HASH_SUCCESS = 0,
+    HASH_FAILURE = -1,
+    HASH_ALLOCATION_ERROR = -2,
+    HASH_INVALID_INPUT = -3,
+    HASH_NODE_NOT_FOUND=-4,
+    HASH_EMPTY=-5
+} HASH_RESULT;
 template<class T>
 class HashTable{
 private:
@@ -16,13 +25,13 @@ private:
     int numOfElements;
     T* table;
     void ReallocTable();
-    int hash1Func(T *item);
-    int hash2Func(T *item);
+    int hash1Func(T item);
+    int hash2Func(T item);
 public:
     explicit HashTable(int size);
     ~HashTable() = default;
-    void Insert(T *item);
-    void Delete(T* item);
+    HASH_RESULT Insert(T item);
+    HASH_RESULT Delete(T item);
     T* find(int itemId);
     void displayHash();
     friend ostream& operator<<(ostream& os, const T& item);
@@ -39,8 +48,8 @@ HashTable<T>::HashTable(int size) {
 }
 
 template<class T>
-void HashTable<T>::Insert(T *item) {
-    int index = hashFunc(item);
+HASH_RESULT HashTable<T>::Insert(T item) {
+    int index = hash1Func(item);
     table[index] = item;
     numOfElements++;
     this->ReallocTable();
@@ -48,7 +57,7 @@ void HashTable<T>::Insert(T *item) {
 }
 
 template<class T>
-void HashTable<T>::Delete(T *item) {
+HASH_RESULT HashTable<T>::Delete(T item) {
 
 }
 
@@ -58,13 +67,13 @@ T *HashTable<T>::find(int itemId) {
 }
 
 template<class T>
-int HashTable<T>::hash1Func(T *item) {
+int HashTable<T>::hash1Func(T item) {
     return *item % tableSize;
 }
 
 template<class T>
-int HashTable<T>::hash2Func(T *item) {
-    return *item;
+int HashTable<T>::hash2Func(T item) {
+    return 1+(*item % tableSize-PRIME);
 }
 
 template<class T>
@@ -77,7 +86,6 @@ void HashTable<T>::displayHash() {
 
 ostream &operator<<(ostream &os, const T &item) {
     cout << "printing table:" <<endl;
-    displayHash();
     return os
 }
 
