@@ -30,15 +30,15 @@ private:
     bool isFull(){
         return (tableSize == numOfElements);
     }
-    bool isHalfEmpty(){
-        return (tableSize/2 == numOfElements);
+    bool isQuarterFull(){
+        return (tableSize/4 == numOfElements);
     }
 public:
     explicit HashTable(int size);
     ~HashTable() = default;
     HASH_RESULT Insert(T item);
     HASH_RESULT Delete(T item);
-    T* find(int itemId);
+    T find(int itemId);
     void displayHash();
     friend ostream& operator<<(ostream& os, const T& item);
 };
@@ -56,6 +56,18 @@ HashTable<T>::HashTable(int size) {
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
     int index = hash1Func(item);
+    if (table[index] != NULL){ //collision occurs
+        int index2 = hash2Func(item);
+        int i = 1;
+        while (true){//get NewIndex
+            int newIndex = (index+i*index2) % tableSize;
+            if (table[newIndex] == NULL){
+                table[newIndex] = item;
+                break;
+            }
+            i++;
+        }
+    } else //no collision
     table[index] = item;
     numOfElements++;
     this->ReallocTable();
@@ -68,7 +80,7 @@ HASH_RESULT HashTable<T>::Delete(T item) {
 }
 
 template<class T>
-T *HashTable<T>::find(int itemId) {
+T HashTable<T>::find(int itemId) {
     return nullptr;
 }
 
@@ -101,7 +113,7 @@ void HashTable<T>::ReallocTable() {
     if (isFull()){
         newTableSize = tableSize*2;
     }
-    if (isHalfEmpty()){
+    if (isQuarterFull()){
         newTableSize = tableSize/2;
     }
     if (newTableSize == 0){
