@@ -10,7 +10,7 @@ using std::ostream;
 using std::endl;
 #define PRIME 3
 #define DELETED -1
-#define INIT_SIZE
+#define INIT_SIZE 11
 typedef enum {
     HASH_SUCCESS = 0,
     HASH_FAILURE = -1,
@@ -29,6 +29,7 @@ private:
     void ReallocateTable();
     int hash1Func(int itemId);
     int hash2Func(int itemId);
+    bool isEmpty() {return numOfElements == 0;}
     bool isFull(){
         return (tableSize == numOfElements);
     }
@@ -93,7 +94,7 @@ HASH_RESULT HashTable<T>::Delete(T item) {
     }
     T res = this->find(*item);
     if (res != NULL){
-        table[*item] = DELETED;
+        *table[*item] = DELETED;
         delete item;
         numOfElements--;
         deletedElements++;
@@ -109,13 +110,18 @@ T HashTable<T>::find(int itemId) {
     int index1 = hash1Func(itemId);
     int index2 = hash2Func(itemId);
     int i = 0;
-    while (table[(index1 + i * index2) % tableSize] != itemId){
-        if (table[(index1 + i * index2) % tableSize] == NULL){
-            return NULL;
+    T tempitem = table[(index1 + i * index2) % tableSize];
+    if (tempitem != NULL){
+        while (*tempitem != itemId){
+            tempitem = table[(index1 + i * index2) % tableSize];
+            if (*tempitem == NULL){
+                return NULL;
+            }
+            i++;
         }
-        i++;
+        return table[(index1 + i * index2) % tableSize];
     }
-    return table[(index1 + i * index2) % tableSize];
+    return NULL;
 }
 
 template<class T>
@@ -130,6 +136,10 @@ int HashTable<T>::hash2Func(int itemId) {
 
 template<class T>
 void HashTable<T>::displayHash() {
+    if (this->isEmpty()){
+        cout << "Hash Table is Empty!" << endl;
+        return;
+    }
     for (int i = 0; i < tableSize ; ++i) {
         if (table[i] != NULL){
             cout << i << "-->" <<table[i] << endl;
@@ -156,10 +166,9 @@ void HashTable<T>::ReallocateTable() {
         return;
     }
     T* newTable = new T[tableSize]();
-    newTable->tableSize = tableSize;
     table = newTable;
     for (int i = 0; i< oldTableSize ; ++i) {
-        if (oldTable[i] != NULL && oldTable[i] != DELETED){
+        if (oldTable[i] != NULL && *oldTable[i] != DELETED){
             this->Insert(oldTable[i]);
         }
         table[i] = NULL;
@@ -169,13 +178,14 @@ void HashTable<T>::ReallocateTable() {
 
 template<class T>
 void HashTable<T>::ReHash() {
+    cout << "REHASHING!" <<endl;
     T* temp = new T[tableSize]();
     for (int i = 0; i < tableSize; ++i) {
         temp[i] =table[i];
         table[i] = NULL;
     }
     for (int j = 0; j < tableSize; ++j) {
-        if (temp[j] == DELETED || temp[j] == NULL){
+        if (*temp[j] == DELETED || temp[j] == NULL){
             continue;
         } else{
             this->Insert(temp[j]);

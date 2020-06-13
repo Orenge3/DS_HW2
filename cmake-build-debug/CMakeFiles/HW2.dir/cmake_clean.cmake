@@ -1,11 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/HW2.dir/MusicManager.cpp.obj"
-  "CMakeFiles/HW2.dir/library2.cpp.obj"
-  "CMakeFiles/HW2.dir/main2.cpp.obj"
-  "HW2.exe"
-  "HW2.exe.manifest"
+  "CMakeFiles/HW2.dir/MusicManager.cpp.o"
+  "CMakeFiles/HW2.dir/library2.cpp.o"
+  "CMakeFiles/HW2.dir/main2.cpp.o"
+  "HW2"
   "HW2.pdb"
-  "libHW2.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -33,8 +33,8 @@ void *Init() {
 StatusType AddArtist(void *DS, int artistID) {
     if (artistID <= 0 || DS == NULL) return INVALID_INPUT;
     try {
-        return ((MusicManager *) DS)->AddArtist(artistID);
-    }
+        return
+    }((MusicManager *) DS)->AddArtist(artistID);
     catch (const std::bad_alloc& e) {
         return ALLOCATION_ERROR;
     }

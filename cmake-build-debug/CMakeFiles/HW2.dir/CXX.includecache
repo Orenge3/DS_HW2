@@ -6,19 +6,55 @@
 
 #IncludeRegexTransform: 
 
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
-library2.h
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
+DS_AVL.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+ostream
+-
 
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+stdio.h
+-
+new
+-
+iostream
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/iostream
+stdexcept
+-
+
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.cpp
+MusicManager.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+DS_AVL.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+library2.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+Artist.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
+
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp
 clocale
 -
 new
 -
 library2.h
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
 MusicManager.h
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
 
-C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/main2.cpp
+assert.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+library2.h
+/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
 
