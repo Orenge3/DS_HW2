@@ -76,7 +76,7 @@ public:
     void ObserveTree();
     ID GetRankedObject(int rank);
     int PrintTreeInorderFast(int numberOfNodesToPrint);
-    const T* FindBiggestObject();
+    T* FindBiggestObject();
 
     class bad_rank : public exception{
         const char * what() const throw () override{
@@ -375,7 +375,7 @@ bool AVLTree<T,ID>::IsEmpty() {
 }
 
 template<class T, class ID>
-const T* AVLTree<T, ID>::FindBiggestObject() {
+T* AVLTree<T, ID>::FindBiggestObject() {
     node* nodeIterator=this->treeEntry;
     if((this->treeEntry)!=NULL){
         while(nodeIterator->rightChild!=NULL){

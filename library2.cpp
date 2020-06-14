@@ -33,8 +33,8 @@ void *Init() {
 StatusType AddArtist(void *DS, int artistID) {
     if (artistID <= 0 || DS == NULL) return INVALID_INPUT;
     try {
-        return
-    }((MusicManager *) DS)->AddArtist(artistID);
+        return ((MusicManager *) DS)->AddArtist(artistID);
+    }
     catch (const std::bad_alloc& e) {
         return ALLOCATION_ERROR;
     }
@@ -74,7 +74,7 @@ StatusType RemoveSong(void *DS, int artistID, int songID) {
 StatusType AddToSongCount(void *DS, int artistID, int songID, int count) {
     if (DS == NULL || songID < 0 || artistID <= 0 || count <= 0) return INVALID_INPUT;
     try {
-        return ((MusicManager *) DS)->AddToSongCount(artistID, songID, 0);
+        return ((MusicManager *) DS)->AddToSongCount(artistID, songID, count);
     }
     catch (const std::bad_alloc& e) {
         return ALLOCATION_ERROR;
@@ -103,6 +103,7 @@ GetRecommendedSongInPlace(void *DS, int rank, int *artistId, int *songId) {
     }
 }
 void Quit(void **DS) {//implement for real
+
     *DS = nullptr;
 }
 

@@ -26,7 +26,9 @@ private:
     HashTable<Artist*> artistTable;
 
 public:
-    MusicManager() = default;
+    MusicManager() {
+        allSongsTree = new AVLTree<Song*, Song>;
+    };
     ~MusicManager() = default;
     StatusType AddArtist(int artistID);
     StatusType RemoveArtist(int artistID);

@@ -22,7 +22,9 @@ public:
     int GetPerformer() const {return artistID;}
     int GetSongID() const {return songID;}
     int GetNumOfStreams() const {return numOfStreams;}
-    void AddNumOfStreams(int count);
+    void AddNumOfStreams(int count){
+        this->numOfStreams+=count;
+    };
     void IncNumOfStreams(){ numOfStreams++;}
     void SetPointerToCharts(void * address){pointerToCharts= address;}
     void * GetPointerToCharts(){return pointerToCharts;}
@@ -70,60 +72,47 @@ public:
     }
 };
 
-void Song::AddNumOfStreams(int count) {
-    this->numOfStreams+=count;
-}
 
 class Artist {
 private:
     int artistID;
-    int numOfSongs;
     Song* BestSong;
-    AVLTree<Song*,int>* songIDTree; //by ID
-    AVLTree<Song*,Song>* songStreamTree; //by numOfStreams
+    AVLTree<Song,int>* songIDTree; //by ID
+    AVLTree<Song,Song>* songStreamTree; //by numOfStreams
 
 public:
     Artist() = default;
-    Artist(int performer, int numOfSongs = 0):
-            artistID(performer),numOfSongs(numOfSongs){
-        songIDTree = new AVLTree<Song*,int>();
-        if (numOfSongs != 0){
-            songStreamTree = new AVLTree<Song*,Song>();
-        }
-        if (numOfSongs == 0 ) {
-            songStreamTree = nullptr;
-        }
-        for (int i = 0; i < numOfSongs; ++i) {
-            Song* songIncharts = new Song(performer,i);
-            Song* songInArray = new Song(performer,i);
-            songIDTree->Insert(i, songIncharts);
-            songStreamTree[i] = *songInArray;
-        }
+    explicit Artist(int performer):
+            artistID(performer){
+        BestSong = new Song();
+        songIDTree = new AVLTree<Song,int>();
+        songStreamTree = new AVLTree<Song,Song>();
     };
     ~Artist()=default;
-    int GetArtistID(){return artistID;}
-    int GetArtistNumOfSongs(){return numOfSongs;}
-    void SetBestSong(Song* songToCheck);
-    const Song* GetBestSong();
-    AVLTree<Song*,int>* GetSongIdTree(){return songIDTree;}
-    AVLTree<Song*,Song>* GetSongStreamTree(){return songStreamTree;}
+    void SetBestSong(Song* songToCheck){
+
+        if(*songToCheck>*(this->BestSong)) {
+            BestSong = songToCheck;
+        }
+    };
+    const Song* GetBestSong(){
+        return this->BestSong;
+    };
+    AVLTree<Song,int>* GetSongIdTree(){return songIDTree;}
+    AVLTree<Song,Song>* GetSongStreamTree(){return songStreamTree;}
     int operator*() const {return artistID;}
 
-
-    void FindNewBestSong();
+    void FindNewBestSong(){
+        this->BestSong=this->GetSongStreamTree()->FindBiggestObject();
+    };
+    bool operator==(const Artist& otherArtist) const{
+        return this->artistID==otherArtist.artistID;
+    }
+    bool operator!=(const Artist& otherArtist) const{
+        return this->artistID != otherArtist.artistID;
+    }
 };
 
-void Artist::SetBestSong(Song *songToCheck) {
-    if(*songToCheck>*(this->BestSong)) {
-        *BestSong = *songToCheck;
-    }
-}
-const Song* Artist::GetBestSong() {
-    return this->BestSong;
-}
 
-void Artist::FindNewBestSong() {
-    (this->BestSong)=*(this->GetSongStreamTree()->FindBiggestObject());
-}
 
 #endif //INC_1W_ARTIST_H

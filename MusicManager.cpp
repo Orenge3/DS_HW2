@@ -42,11 +42,11 @@ StatusType MusicManager::AddSong(int artistID, int songID) {
         return FAILURE;
     }
 
-    if(uArtist->GetSongIdTree()->Insert(songID,newSong)!=AVL_SUCCESS) {
+    if(uArtist->GetSongIdTree()->Insert(songID,*newSong)!=AVL_SUCCESS) {
         delete(newSong);
         return FAILURE;
     }
-    uArtist->GetSongStreamTree()->Insert(*newSong,newSong);
+    uArtist->GetSongStreamTree()->Insert(*newSong,*newSong);
     this->allSongsTree->Insert(*newSong,newSong);
     uArtist->SetBestSong(newSong);
     delete(newSong);
@@ -61,7 +61,7 @@ StatusType MusicManager::RemoveSong(int artistID, int songID) {
         delete(songToDelete);
         return FAILURE;
     }
-    if(uArtist->GetSongIdTree()->Find(songID,songToDelete)!=AVL_SUCCESS) {
+    if(uArtist->GetSongIdTree()->Find(songID,*songToDelete)!=AVL_SUCCESS) {
         delete(songToDelete);
         return FAILURE;
     }
@@ -81,7 +81,7 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
         delete(songToImprove);
         return FAILURE;
     }
-    if(uArtist->GetSongIdTree()->Find(songID,songToImprove)!=AVL_SUCCESS) {
+    if(uArtist->GetSongIdTree()->Find(songID,*songToImprove)!=AVL_SUCCESS) {
         delete(songToImprove);
         return FAILURE;
     }
@@ -91,7 +91,7 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
 
     songToImprove->AddNumOfStreams(count);
 
-    uArtist->GetSongStreamTree()->Insert(*songToImprove,songToImprove);
+    uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
     allSongsTree->Insert(*songToImprove,songToImprove);
 
     uArtist->SetBestSong(songToImprove);
@@ -112,14 +112,14 @@ MusicManager::GetArtistBestSong(int artistID, int *songID) {
 
 StatusType
 MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
-    Song *rankedSong = nullptr;
+    Song rankedSong ;
     try{
-        *rankedSong = allSongsTree->GetRankedObject(rank);
+        rankedSong = allSongsTree->GetRankedObject(rank);
     }catch (AVLTree<Song*,Song>::bad_rank& e){
         return FAILURE;
     }
 
-    *artistId=rankedSong->GetPerformer();
-    *songId=rankedSong->GetSongID();
+    *artistId=rankedSong.GetPerformer();
+    *songId=rankedSong.GetSongID();
     return SUCCESS;
 }
