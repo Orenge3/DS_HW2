@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.cpp" "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/HW2.dir/MusicManager.cpp.o"
-  "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp" "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/HW2.dir/library2.cpp.o"
-  "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/main2.cpp" "/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/HW2.dir/main2.cpp.o"
+  "D:/home_work/data_struct/2w/master/MusicManager.cpp" "D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/HW2.dir/MusicManager.cpp.obj"
+  "D:/home_work/data_struct/2w/master/library2.cpp" "D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/HW2.dir/library2.cpp.obj"
+  "D:/home_work/data_struct/2w/master/main2.cpp" "D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/HW2.dir/main2.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

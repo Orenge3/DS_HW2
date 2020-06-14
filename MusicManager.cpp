@@ -18,6 +18,7 @@ StatusType MusicManager::AddArtist(int artistID) {
 }
 
 StatusType MusicManager::RemoveArtist(int artistID) {
+
     Artist *uArtist;
     uArtist=this->artistTable.find(artistID);
 
@@ -117,6 +118,7 @@ MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
     }catch (AVLTree<Song*,Song>::bad_rank& e){
         return FAILURE;
     }
+
     *artistId=rankedSong->GetPerformer();
     *songId=rankedSong->GetSongID();
     return SUCCESS;

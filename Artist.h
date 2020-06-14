@@ -88,7 +88,7 @@ public:
             artistID(performer),numOfSongs(numOfSongs){
         songIDTree = new AVLTree<Song*,int>();
         if (numOfSongs != 0){
-            songStreamTree = new Song[numOfSongs]();
+            songStreamTree = new AVLTree<Song*,Song>();
         }
         if (numOfSongs == 0 ) {
             songStreamTree = nullptr;
