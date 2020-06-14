@@ -37,13 +37,15 @@ private:
         return (tableSize/4 == numOfElements);
     }
     void ReHash();
+//    void ReInsert(T item);
 public:
-    explicit HashTable(int size);
+    explicit HashTable(int size = INIT_SIZE);
     ~HashTable() = default;
     HASH_RESULT Insert(T item);
     HASH_RESULT Delete(T item);
     T find(int itemId, int *rIndex =NULL);
     void displayHash();
+    int GetNumOfElements(){return numOfElements;}
 };
 
 template<class T>
@@ -56,6 +58,7 @@ HashTable<T>::HashTable(int size) {
         table[i] = NULL;
     }
 }
+
 
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
@@ -85,14 +88,14 @@ HASH_RESULT HashTable<T>::Insert(T item) {
             deletedElements--;
         }
         table[index] = item;
-        numOfElements++;
-        int newTableSize = 0;
-        if (isFull()){
-            newTableSize = tableSize * 2;
-        }
-        this->ReallocateTable(newTableSize);
-        return HASH_SUCCESS;
     }
+    numOfElements++;
+    int newTableSize = 0;
+    if (isFull()){
+        newTableSize = tableSize * 2;
+    }
+    this->ReallocateTable(newTableSize);
+    return HASH_SUCCESS;
 }
 
 template<class T>
@@ -134,7 +137,7 @@ T HashTable<T>::find(int itemId, int *rIndex) {
     if (tempitem != NULL){
         while (**tempitem != itemId){
             tempitem = table[(index1 + i * index2) % tableSize];
-            if (**tempitem == NULL){
+            if (tempitem == NULL){
                 return NULL;
             }
             i++;
@@ -174,19 +177,22 @@ void HashTable<T>::displayHash() {
 template<class T>
 void HashTable<T>::ReallocateTable(int newTableSize) {
     if (newTableSize == 0) return; //dont realloc if allocate to zero
+    numOfElements = 0; //will reinsert them so zero counter
+    deletedElements = 0;//after reallocating all deleted elements will be turned to null
     T* oldTable = table;
+    int  oldTableSize = tableSize;
     T* newTable = new T[newTableSize]();
     table = newTable;
-    for (int i = 0; i< tableSize ; ++i) {
+    tableSize = newTableSize;
+    //initialize newTable
+    for (int j = 0; j < newTableSize ; ++j) {
+        table[j] = NULL;
+    }
+    for (int i = 0; i< oldTableSize ; ++i) {
         if (oldTable[i] != NULL && *oldTable[i] != *deletedElement){
             this->Insert(oldTable[i]);
         }
-        table[i] = NULL;
     }
-    for (int j = tableSize; j < newTableSize ; ++j) {
-        table[j] = NULL;
-    }
-    tableSize = newTableSize;
     delete [] oldTable;
 }
 
