@@ -59,6 +59,34 @@ HashTable<T>::HashTable(int size) {
     }
 }
 
+//template<class T>
+//void HashTable<T>::ReInsert(T item) {
+//    if (item == NULL){
+//        return;
+//    }
+//    int index = hash1Func(**item);
+//    if (table[index] != NULL && table[index] != deletedElement){ //collision occurs
+//        if (*table[index] == *item){
+//            return;
+//        }
+//        int index2 = hash2Func(**item);
+//        int i = 1;
+//        while (true){//get NewIndex
+//            int newIndex = (index + i * index2) % tableSize;
+//            if (table[newIndex] == NULL){
+//                table[newIndex] = item;
+//                break;
+//            }
+//            if (table[newIndex] == item){
+//                return ;
+//            }
+//            i++;
+//        }
+//    }else{//no collision
+//        table[index] = item;
+//        return;
+//    }
+//}
 
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
@@ -142,7 +170,9 @@ T HashTable<T>::find(int itemId, int *rIndex) {
             }
             i++;
         }
-        *rIndex = (index1 + i * index2) % tableSize;
+        if (rIndex != NULL){
+            *rIndex = (index1 + i * index2) % tableSize;
+        }
         return table[(index1 + i * index2) % tableSize];
     }
     return NULL;
