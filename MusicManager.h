@@ -26,7 +26,7 @@ private:
     HashTable<Artist*> artistTable;
 
 public:
-    MusicManager() {
+    MusicManager():artistTable(INIT_SIZE){
         allSongsTree = new AVLTree<Song*, Song>;
     };
     ~MusicManager() = default;

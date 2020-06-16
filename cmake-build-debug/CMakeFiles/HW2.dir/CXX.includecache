@@ -6,49 +6,61 @@
 
 #IncludeRegexTransform: 
 
-D:/home_work/data_struct/2w/master/Artist.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
 DS_AVL.h
-D:/home_work/data_struct/2w/master/DS_AVL.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
 ostream
 -
 
-D:/home_work/data_struct/2w/master/DS_AVL.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
 stdio.h
 -
 new
 -
 iostream
-D:/home_work/data_struct/2w/master/iostream
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/iostream
 stdexcept
 -
 
-D:/home_work/data_struct/2w/master/HashTable.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/HashTable.h
 iostream
 -
 
-D:/home_work/data_struct/2w/master/MusicManager.cpp
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.cpp
 MusicManager.h
-D:/home_work/data_struct/2w/master/MusicManager.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
 
-D:/home_work/data_struct/2w/master/MusicManager.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
 DS_AVL.h
-D:/home_work/data_struct/2w/master/DS_AVL.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
 library2.h
-D:/home_work/data_struct/2w/master/library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
 Artist.h
-D:/home_work/data_struct/2w/master/Artist.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
 HashTable.h
-D:/home_work/data_struct/2w/master/HashTable.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/HashTable.h
 
-D:/home_work/data_struct/2w/master/library2.cpp
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp
 clocale
 -
 new
 -
 library2.h
-D:/home_work/data_struct/2w/master/library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
 MusicManager.h
-D:/home_work/data_struct/2w/master/MusicManager.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
 
-D:/home_work/data_struct/2w/master/library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/main2.cpp
+assert.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+library2.h
+C:/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
 

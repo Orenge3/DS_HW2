@@ -26,7 +26,7 @@ private:
     int numOfElements;
     int deletedElements;
     T deletedElement;
-    int iteratorIndex;
+    int iteratorIndex = ITERATOR_UNINIT;
     T* table;
     void ReallocateTable(int newTableSize);
     int hash1Func(int itemId);
@@ -41,9 +41,11 @@ private:
 
     void ReHash();
 public:
+    HashTable() = delete;
     explicit HashTable(int size = INIT_SIZE);
     ~HashTable(){
         delete [] table;
+        delete deletedElement;
     };
     HASH_RESULT Insert(T item);
     HASH_RESULT Delete(T item);
@@ -87,6 +89,7 @@ HashTable<T>::HashTable(int size) {
     tableSize = size;
     numOfElements = 0;
     deletedElements = 0;
+    deletedElement = new Artist(0);
     table = new T[tableSize]();
     for (int i = 0; i < tableSize ; ++i) {
         table[i] = NULL;
@@ -181,12 +184,12 @@ T HashTable<T>::find(int itemId, int *rIndex) {
     int index1 = hash1Func(itemId);
     int index2 = hash2Func(itemId);
     int i = 0;
-    T tempitem = table[(index1 + i * index2) % tableSize];
-    if (tempitem != NULL){
-        while (**tempitem != itemId){
+    T tempItem = table[(index1 + i * index2) % tableSize];
+    if (tempItem != NULL){
+        while (**tempItem != itemId){
             i++;
-            tempitem = table[(index1 + i * index2) % tableSize];
-            if (tempitem == NULL){
+            tempItem = table[(index1 + i * index2) % tableSize];
+            if (tempItem == NULL){
                 return NULL;
             }
         }

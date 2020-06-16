@@ -1,4 +1,4 @@
-# Install script for directory: D:/home_work/data_struct/2w/master
+# Install script for directory: C:/Technion/Projects/Clion_Projects/DataStructs/HW2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/home_work/data_struct/2w/master/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

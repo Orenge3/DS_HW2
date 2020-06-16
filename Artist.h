@@ -88,14 +88,18 @@ public:
         songIDTree = new AVLTree<Song,int>();
         songStreamTree = new AVLTree<Song,Song>();
     };
-    ~Artist()=default;
+    ~Artist(){
+        delete BestSong;
+        delete songIDTree;
+        delete songStreamTree;
+    }
     void SetBestSong(Song* songToCheck){
 
         if(*songToCheck>*(this->BestSong)) {
             BestSong = songToCheck;
         }
     };
-    const Song* GetBestSong(){
+    Song* GetBestSong(){
         return this->BestSong;
     };
     AVLTree<Song,int>* GetSongIdTree(){return songIDTree;}

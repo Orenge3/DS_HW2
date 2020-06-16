@@ -339,7 +339,7 @@ void AVLTree<T,ID>::DeleteTree() {
     Node->postOrderTreeDeleteRecursion(this->treeEntry);
     this->AVLTree<T,ID>::treeEntry= nullptr;
     this->AVLTree<T,ID>::smallestNode= nullptr;
-    cout<<"DeleteTree: Tree is deleted"<<endl;
+//    cout<<"DeleteTree: Tree is deleted"<<endl;
 }
 
 template <class T, class ID>

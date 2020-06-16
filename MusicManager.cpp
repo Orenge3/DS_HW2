@@ -28,6 +28,7 @@ StatusType MusicManager::RemoveArtist(int artistID) {
         return FAILURE;
 
     this->artistTable.Delete(uArtist);
+    delete uArtist;
 
     return SUCCESS;
 }
@@ -93,9 +94,9 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
 
     uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
     allSongsTree->Insert(*songToImprove,songToImprove);
-
+    Song* todelete = uArtist->GetBestSong();
     uArtist->SetBestSong(songToImprove);
-    delete(songToImprove);
+    delete(todelete);
     return SUCCESS;
 }
 
@@ -127,7 +128,9 @@ MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
 void MusicManager::DeleteMusicDatabase() {
     this->allSongsTree->DeleteTree();
     delete(allSongsTree);
-
+    HASH_FOREACH(Artist*,toDelete,artistTable){
+        delete toDelete;
+    }
     //delete(artistTable)
 
 }
