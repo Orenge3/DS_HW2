@@ -123,3 +123,11 @@ MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
     *songId=rankedSong.GetSongID();
     return SUCCESS;
 }
+
+void MusicManager::DeleteMusicDatabase() {
+    this->allSongsTree->DeleteTree();
+    delete(allSongsTree);
+
+    //delete(artistTable)
+
+}

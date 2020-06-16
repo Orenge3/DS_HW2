@@ -1,3 +1,3 @@
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/cmake-build-debug/CMakeFiles/HW2.dir
+D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/HW2.dir
+D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/home_work/data_struct/2w/master/cmake-build-debug/CMakeFiles/rebuild_cache.dir

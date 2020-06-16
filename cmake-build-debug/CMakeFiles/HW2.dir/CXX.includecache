@@ -6,55 +6,49 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
+D:/home_work/data_struct/2w/master/Artist.h
 DS_AVL.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+D:/home_work/data_struct/2w/master/DS_AVL.h
 ostream
 -
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+D:/home_work/data_struct/2w/master/DS_AVL.h
 stdio.h
 -
 new
 -
 iostream
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/iostream
+D:/home_work/data_struct/2w/master/iostream
 stdexcept
 -
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.cpp
+D:/home_work/data_struct/2w/master/HashTable.h
+iostream
+-
+
+D:/home_work/data_struct/2w/master/MusicManager.cpp
 MusicManager.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+D:/home_work/data_struct/2w/master/MusicManager.h
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+D:/home_work/data_struct/2w/master/MusicManager.h
 DS_AVL.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/DS_AVL.h
+D:/home_work/data_struct/2w/master/DS_AVL.h
 library2.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+D:/home_work/data_struct/2w/master/library2.h
 Artist.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/Artist.h
+D:/home_work/data_struct/2w/master/Artist.h
+HashTable.h
+D:/home_work/data_struct/2w/master/HashTable.h
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.cpp
+D:/home_work/data_struct/2w/master/library2.cpp
 clocale
 -
 new
 -
 library2.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+D:/home_work/data_struct/2w/master/library2.h
 MusicManager.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/MusicManager.h
+D:/home_work/data_struct/2w/master/MusicManager.h
 
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
-
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/main2.cpp
-assert.h
--
-stdio.h
--
-stdlib.h
--
-string.h
--
-library2.h
-/mnt/c/Technion/Projects/Clion_Projects/DataStructs/HW2/library2.h
+D:/home_work/data_struct/2w/master/library2.h
 

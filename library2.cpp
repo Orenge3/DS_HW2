@@ -104,6 +104,7 @@ GetRecommendedSongInPlace(void *DS, int rank, int *artistId, int *songId) {
 }
 void Quit(void **DS) {//implement for real
 
+    (*(MusicManager**)DS)->DeleteMusicDatabase();
     *DS = nullptr;
 }
 

@@ -37,7 +37,7 @@ public:
     StatusType AddToSongCount(int artistID, int songID, int count);
     StatusType GetArtistBestSong(int artistID, int *songID);
     StatusType GetRecommendedSongInPlace(int rank, int *artistId, int *songId);
-
+    void DeleteMusicDatabase();
 
 };
 
