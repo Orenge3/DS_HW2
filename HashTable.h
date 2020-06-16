@@ -10,6 +10,7 @@ using std::ostream;
 using std::endl;
 #define PRIME 3
 #define INIT_SIZE 11
+#define ITERATOR_UNINIT -1
 typedef enum {
     HASH_SUCCESS = 0,
     HASH_FAILURE = -1,
@@ -25,6 +26,7 @@ private:
     int numOfElements;
     int deletedElements;
     T deletedElement;
+    int iteratorIndex;
     T* table;
     void ReallocateTable(int newTableSize);
     int hash1Func(int itemId);
@@ -36,16 +38,48 @@ private:
     bool isQuarterFull(){
         return (tableSize/4 == numOfElements);
     }
+
     void ReHash();
-//    void ReInsert(T item);
 public:
     explicit HashTable(int size = INIT_SIZE);
-    ~HashTable() = default;
+    ~HashTable(){
+        delete [] table;
+    };
     HASH_RESULT Insert(T item);
     HASH_RESULT Delete(T item);
+    HASH_RESULT TableDelete();
     T find(int itemId, int *rIndex =NULL);
     void displayHash();
     int GetNumOfElements(){return numOfElements;}
+    int GetNumOfDeleted(){return deletedElements;}
+    T HashGetFirst() {
+        if (!isEmpty()){
+            iteratorIndex = 0;
+            while (iteratorIndex <= tableSize-1){
+                if (table[iteratorIndex] != NULL && table[iteratorIndex] != deletedElement){
+                    return table[iteratorIndex];
+                } else{
+                    iteratorIndex++;
+                }
+            }
+            printf("problem with is empty function, or counting of elements");
+        }
+        iteratorIndex = ITERATOR_UNINIT;
+        return NULL;
+    }
+    T HashGetNext(){
+        while (iteratorIndex < tableSize-1 && iteratorIndex != ITERATOR_UNINIT){
+            iteratorIndex++;
+            if (table[iteratorIndex] != NULL && table[iteratorIndex] != deletedElement){
+                return table[iteratorIndex];
+            }
+        }
+        iteratorIndex = ITERATOR_UNINIT;
+        return NULL;
+    }
+    int GetIndex(){return iteratorIndex;}
+    int GetSize(){return tableSize;}
+
 };
 
 template<class T>
@@ -59,40 +93,12 @@ HashTable<T>::HashTable(int size) {
     }
 }
 
-//template<class T>
-//void HashTable<T>::ReInsert(T item) {
-//    if (item == NULL){
-//        return;
-//    }
-//    int index = hash1Func(**item);
-//    if (table[index] != NULL && table[index] != deletedElement){ //collision occurs
-//        if (*table[index] == *item){
-//            return;
-//        }
-//        int index2 = hash2Func(**item);
-//        int i = 1;
-//        while (true){//get NewIndex
-//            int newIndex = (index + i * index2) % tableSize;
-//            if (table[newIndex] == NULL){
-//                table[newIndex] = item;
-//                break;
-//            }
-//            if (table[newIndex] == item){
-//                return ;
-//            }
-//            i++;
-//        }
-//    }else{//no collision
-//        table[index] = item;
-//        return;
-//    }
-//}
-
 template<class T>
 HASH_RESULT HashTable<T>::Insert(T item) {
     if (item == NULL){
         return HASH_INVALID_INPUT;
     }
+    iteratorIndex = ITERATOR_UNINIT;
     int index = hash1Func(**item);
     if (table[index] != NULL && table[index] != deletedElement){ //collision occurs
         if (*table[index] == *item){
@@ -128,6 +134,7 @@ HASH_RESULT HashTable<T>::Insert(T item) {
 
 template<class T>
 HASH_RESULT HashTable<T>::Delete(T item) {
+    iteratorIndex = ITERATOR_UNINIT;
     if (item == NULL){
         return HASH_INVALID_INPUT;
     }
@@ -157,6 +164,19 @@ HASH_RESULT HashTable<T>::Delete(T item) {
 }
 
 template<class T>
+HASH_RESULT HashTable<T>::TableDelete() {
+    int numToDelete = numOfElements;
+    for (int i = 0; i <= numToDelete; ++i) {
+        for (int j = 0; j < tableSize ; ++j) {
+            if (this->Delete(table[j]) == HASH_SUCCESS){
+                i++;
+            }
+        }
+    }
+    return HASH_SUCCESS;
+}
+
+template<class T>
 T HashTable<T>::find(int itemId, int *rIndex) {
     int index1 = hash1Func(itemId);
     int index2 = hash2Func(itemId);
@@ -164,11 +184,11 @@ T HashTable<T>::find(int itemId, int *rIndex) {
     T tempitem = table[(index1 + i * index2) % tableSize];
     if (tempitem != NULL){
         while (**tempitem != itemId){
+            i++;
             tempitem = table[(index1 + i * index2) % tableSize];
             if (tempitem == NULL){
                 return NULL;
             }
-            i++;
         }
         if (rIndex != NULL){
             *rIndex = (index1 + i * index2) % tableSize;
@@ -196,7 +216,7 @@ void HashTable<T>::displayHash() {
     }
     cout << "Hash Table:" <<endl;
     for (int i = 0; i < tableSize ; ++i) {
-        if (table[i] != NULL){
+        if (table[i] != NULL && *table[i] != *deletedElement){
             cout << i << "-->" << **table[i] << endl;
         } else
             cout << i << endl;
@@ -228,21 +248,27 @@ void HashTable<T>::ReallocateTable(int newTableSize) {
 
 template<class T>
 void HashTable<T>::ReHash() {
-    cout << "REHASHING!" <<endl;
     T* temp = new T[tableSize]();
+    numOfElements = 0; // will reinsert them
     for (int i = 0; i < tableSize; ++i) {
-        temp[i] =table[i];
+        temp[i] = table[i];
         table[i] = NULL;
     }
     for (int j = 0; j < tableSize; ++j) {
-        if (*temp[j] == *deletedElement || temp[j] == NULL){
+        if (temp[j] == NULL || *temp[j] == *deletedElement){
             continue;
         } else{
             this->Insert(temp[j]);
         }
     }
+    delete [] temp;
     deletedElements = 0;
 }
+
+#define HASH_FOREACH(type, iterator, Hashtable)          \
+    for(type iterator = (type) Hashtable.HashGetFirst() ; \
+        iterator;                               \
+        iterator = Hashtable.HashGetNext())
 
 
 #endif //HW2_HASHTABLE_H
