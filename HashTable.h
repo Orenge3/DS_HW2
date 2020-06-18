@@ -115,6 +115,9 @@ HASH_RESULT HashTable<T>::Insert(T item) {
                 table[newIndex] = item;
                 break;
             }
+            if (table[newIndex] == deletedElement){
+                break;
+            }
             if (table[newIndex] == item){
                 return HASH_FAILURE;
             }
@@ -146,7 +149,7 @@ HASH_RESULT HashTable<T>::Delete(T item) {
     }
     int* index = new int ();
     T res = this->find(*(*item), index);
-    if (res != NULL){
+    if (res != NULL && res != deletedElement){
         table[*index] = deletedElement;
         delete index;
         numOfElements--;
@@ -197,7 +200,9 @@ T HashTable<T>::find(int itemId, int *rIndex) {
         if (rIndex != NULL){
             *rIndex = (index1 + i * index2) % tableSize;
         }
-        return table[(index1 + i * index2) % tableSize];
+        if (((index1 + i * index2) % tableSize) != (index1 + index2)){
+            return table[(index1 + i * index2) % tableSize];
+        }
     }
     return NULL;
 }
