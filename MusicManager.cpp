@@ -14,7 +14,11 @@
 //assume invalid input handled for all functions
 StatusType MusicManager::AddArtist(int artistID) {
     Artist *newArtist =new Artist(artistID);
-    return this->artistTable.Insert(newArtist)==HASH_SUCCESS ? SUCCESS : FAILURE;
+    HASH_RESULT res =this->artistTable.Insert(newArtist);
+    if (res == HASH_FAILURE){
+        delete newArtist;
+    }
+    return res==HASH_SUCCESS ? SUCCESS : FAILURE;
 }
 
 StatusType MusicManager::RemoveArtist(int artistID) {
