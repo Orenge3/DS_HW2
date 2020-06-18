@@ -137,6 +137,6 @@ void MusicManager::DeleteMusicDatabase() {
         toDelete->GetSongStreamTree()->DeleteTree();
         delete toDelete;
     }
-    //delete(artistTable)
+   //delete(artistTable)
 
 }
