@@ -186,7 +186,8 @@ T HashTable<T>::find(int itemId, int *rIndex) {
     int i = 0;
     T tempItem = table[(index1 + i * index2) % tableSize];
     if (tempItem != NULL){
-        while (**tempItem != itemId){
+        while (**tempItem != itemId
+        && ((index1 + i * index2) % tableSize)!= (index1 + index2)){
             i++;
             tempItem = table[(index1 + i * index2) % tableSize];
             if (tempItem == NULL){
@@ -241,6 +242,7 @@ void HashTable<T>::ReallocateTable(int newTableSize) {
     for (int j = 0; j < newTableSize ; ++j) {
         table[j] = NULL;
     }
+    //copy old table to new table;
     for (int i = 0; i< oldTableSize ; ++i) {
         if (oldTable[i] != NULL && *oldTable[i] != *deletedElement){
             this->Insert(oldTable[i]);
