@@ -94,9 +94,13 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
 
     uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
     allSongsTree->Insert(*songToImprove,songToImprove);
-    Song* todelete = uArtist->GetBestSong();
+    Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(songToImprove);
-    delete(todelete);
+    if (uArtist->GetBestSong() == currentBestSong){
+        delete (songToImprove);
+    } else{
+        delete(currentBestSong);
+    }
     return SUCCESS;
 }
 
@@ -129,6 +133,8 @@ void MusicManager::DeleteMusicDatabase() {
     this->allSongsTree->DeleteTree();
     delete(allSongsTree);
     HASH_FOREACH(Artist*,toDelete,artistTable){
+        toDelete->GetSongIdTree()->DeleteTree();
+        toDelete->GetSongStreamTree()->DeleteTree();
         delete toDelete;
     }
     //delete(artistTable)
