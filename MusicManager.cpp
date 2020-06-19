@@ -53,17 +53,8 @@ StatusType MusicManager::AddSong(int artistID, int songID) {
     }
     uArtist->GetSongStreamTree()->Insert(*newSong,*newSong);
     this->allSongsTree->Insert(*newSong,newSong);
-    Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(newSong);
-    if (currentBestSong != NULL){
-        if (*(uArtist->GetBestSong()) == *currentBestSong){
-//            delete (newSong);
-        } else {
-//            delete (currentBestSong);
-        }
-    } else{
-        delete newSong;
-    }
+    delete newSong;
     return SUCCESS;
 }
 
@@ -116,13 +107,14 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
     uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
     uArtist->GetSongIdTree()->Insert(songID,*songToImprove); ///** added by oren, need to change value in id tree too
     allSongsTree->Insert(*songToImprove,songToImprove);
-    Song* currentBestSong = uArtist->GetBestSong();
+//    Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(songToImprove);
-    if (uArtist->GetBestSong() == currentBestSong){
-        delete (songToImprove);
-    } else{
-        delete(currentBestSong);
-    }
+//    if (uArtist->GetBestSong() == currentBestSong){
+//        delete (songToImprove);
+//    } else{
+//        delete(currentBestSong);
+//    }
+    delete songToImprove;
     return SUCCESS;
 }
 
@@ -133,6 +125,7 @@ MusicManager::GetArtistBestSong(int artistID, int *songID) {
     if(uArtist== nullptr){
         return FAILURE;
     }
+    if(uArtist->GetBestSong()==NULL) return FAILURE;
     *songID=uArtist->GetBestSong()->GetSongID();
     return SUCCESS;
 }

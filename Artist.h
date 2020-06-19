@@ -103,7 +103,6 @@ public:
             return;
         }
         if(*songToCheck>*(this->BestSong)) {
-
             *BestSong = *songToCheck;
         }
     };
@@ -115,7 +114,13 @@ public:
     int operator*() const {return artistID;}
 
     void FindNewBestSong(){
-        this->BestSong=this->GetSongStreamTree()->FindBiggestObject();
+        //added by oren
+        if (this->GetSongStreamTree()->FindBiggestObject() != NULL){
+            *this->BestSong = *this->GetSongStreamTree()->FindBiggestObject();
+        } else{
+            delete this->BestSong;
+            this->BestSong = NULL;
+        }
     };
     bool operator==(const Artist& otherArtist) const{
         return this->artistID==otherArtist.artistID;
