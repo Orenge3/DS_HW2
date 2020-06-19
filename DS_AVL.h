@@ -103,6 +103,9 @@ AVL_RESULT AVLTree<T,ID>::Find(ID objectID, T& data) {
 template <class T, class ID>
 ID AVLTree<T,ID>::GetRankedObject(int rank) {
     if (rank<1 || rank>treeSize) throw bad_rank();
+    if(rank == 9){
+        cout<<"here"<<endl;
+    }
     return this->treeEntry->findRankedNodeRecursion(rank, 0, this->treeEntry);
 
 }
@@ -147,7 +150,6 @@ AVL_RESULT AVLTree<T,ID>::Insert(ID objectID, T &data) {
             case AVL_EMPTY:
                 treeEntry=newNode;
                 this->smallestNode=newNode;
-
                 delete(parentNodePointer);
                 delete(nodePointer);
                 treeSize++;
@@ -212,9 +214,9 @@ void AVLTree<T,ID>::node::deleteNode(node* nodeToDelete, node* parentToNodeToDel
     if(nodeToDelete->leftChild==NULL){
 
 
-        if(nodeToDelete->rightChild==NULL){
+        if(nodeToDelete->rightChild==NULL){//NTD is leaf
 
-            if(tree->treeEntry==nodeToDelete){
+            if(tree->treeEntry==nodeToDelete){//Delete treeEntry. Its only tree node
 
                 delete(nodeToDelete->_data);
                 delete(nodeToDelete);
@@ -224,7 +226,7 @@ void AVLTree<T,ID>::node::deleteNode(node* nodeToDelete, node* parentToNodeToDel
             }
 
 
-            if(parentToNodeToDelete->nodeID<nodeToDelete->nodeID){
+            if(parentToNodeToDelete->nodeID<nodeToDelete->nodeID){//if parent is SMALLER than NTD and left to NTD is NULL
                 parentToNodeToDelete->rightChild= nullptr;
                 if(parentToNodeToDelete->leftChild==NULL){
                     nodeToCheck=parentToNodeToDelete;
@@ -232,7 +234,7 @@ void AVLTree<T,ID>::node::deleteNode(node* nodeToDelete, node* parentToNodeToDel
 
                 delete(nodeToDelete->_data);
                 delete(nodeToDelete);
-            } else{
+            } else{//if parent is BIGGER than NTD and left to NTD is NULL
                 parentToNodeToDelete->leftChild= nullptr;
                 if(parentToNodeToDelete->rightChild==NULL){
                     nodeToCheck=parentToNodeToDelete;
@@ -241,8 +243,8 @@ void AVLTree<T,ID>::node::deleteNode(node* nodeToDelete, node* parentToNodeToDel
                 delete(nodeToDelete);
             }
 
-        }else{
-            if(parentToNodeToDelete==NULL){
+        }else{//NTD is not leaf and left to NTD is NULL and right to NTD is NOT NULL
+            if(parentToNodeToDelete==NULL){//NTD is treeEntry
                 tree->treeEntry=nodeToDelete->rightChild;
                 if (nodeToDelete->rightChild!=NULL) nodeToDelete->rightChild->parent= nullptr;
                 delete(nodeToDelete->_data);
@@ -267,7 +269,7 @@ void AVLTree<T,ID>::node::deleteNode(node* nodeToDelete, node* parentToNodeToDel
             delete(temp->_data);
             delete(temp);
         }
-    } else{
+    } else{//left to NTD is NOT NULL
         if(nodeToDelete->leftChild->rightChild==NULL){
 
             if(parentToNodeToDelete==NULL){
@@ -339,7 +341,6 @@ void AVLTree<T,ID>::DeleteTree() {
     Node->postOrderTreeDeleteRecursion(this->treeEntry);
     this->AVLTree<T,ID>::treeEntry= nullptr;
     this->AVLTree<T,ID>::smallestNode= nullptr;
-//    cout<<"DeleteTree: Tree is deleted"<<endl;
 }
 
 template <class T, class ID>
@@ -697,7 +698,7 @@ void AVLTree<T,ID>::node::correctionRL(AVLTree::node *parentNode){
     swapNodes(parentNode,rlChild);
 
 
-    parentNode->rightChild->leftChild=rlChild->rightChild;
+    parentNode->rightChild->leftChild=rlChild->rightChild;//67 20 l->17 25
     if( parentNode->rightChild->leftChild!=NULL) parentNode->rightChild->leftChild->parent=parentNode->rightChild;
 
     rlChild->rightChild=rlChild->leftChild;
@@ -711,8 +712,10 @@ void AVLTree<T,ID>::node::correctionRL(AVLTree::node *parentNode){
 
     rlChild->subTreeNodeNumber=getSubtreeNodeNumber(rlChild->rightChild,rlChild->leftChild);
     rlChild->height=getNodeHeight(rlChild->rightChild,rlChild->leftChild);
-    parentNode->rightChild->height=getNodeHeight(parentNode->leftChild->rightChild,parentNode->leftChild->leftChild);
-    parentNode->rightChild->subTreeNodeNumber=getSubtreeNodeNumber(parentNode->leftChild->rightChild,parentNode->leftChild->leftChild);
+//    parentNode->rightChild->height=getNodeHeight(parentNode->leftChild->rightChild,parentNode->leftChild->leftChild);
+//    parentNode->rightChild->subTreeNodeNumber=getSubtreeNodeNumber(parentNode->leftChild->rightChild,parentNode->leftChild->leftChild);
+    parentNode->rightChild->height=getNodeHeight(parentNode->rightChild->rightChild,parentNode->rightChild->leftChild);
+    parentNode->rightChild->subTreeNodeNumber=getSubtreeNodeNumber(parentNode->rightChild->rightChild,parentNode->rightChild->leftChild);
     parentNode->height=getNodeHeight(parentNode->rightChild,parentNode->leftChild);
     parentNode->subTreeNodeNumber=getSubtreeNodeNumber(parentNode->rightChild,parentNode->leftChild);
 
