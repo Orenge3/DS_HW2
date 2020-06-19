@@ -101,6 +101,9 @@ HASH_RESULT HashTable<T>::Insert(T item) {
     if (item == NULL){
         return HASH_INVALID_INPUT;
     }
+    if (this->find(**item) != NULL){ //item exists
+        return HASH_FAILURE;
+    }
     iteratorIndex = ITERATOR_UNINIT;
     int index = hash1Func(**item);
     if (table[index] != NULL && table[index] != deletedElement){ //collision occurs
@@ -111,14 +114,20 @@ HASH_RESULT HashTable<T>::Insert(T item) {
         int i = 1;
         while (true){//get NewIndex
             int newIndex = (index + i * index2) % tableSize;
-            if (table[newIndex] == NULL){
+            T tempItem = table[newIndex];
+            if (newIndex == index){
+                index++;
+            }
+            if (tempItem == NULL){
                 table[newIndex] = item;
                 break;
             }
-            if (table[newIndex] == deletedElement){
+            if (tempItem == deletedElement){
+                deletedElements--;
+                table[newIndex] = item;
                 break;
             }
-            if (table[newIndex] == item){
+            if (tempItem == item){
                 return HASH_FAILURE;
             }
             i++;
@@ -258,9 +267,11 @@ void HashTable<T>::ReallocateTable(int newTableSize) {
         table[j] = NULL;
     }
     //copy old table to new table;
+    T temp;
     for (int i = 0; i< oldTableSize ; ++i) {
         if (oldTable[i] != NULL && *oldTable[i] != *deletedElement){
-            this->Insert(oldTable[i]);
+            temp = oldTable[i];
+            this->Insert(temp);
         }
     }
     delete [] oldTable;

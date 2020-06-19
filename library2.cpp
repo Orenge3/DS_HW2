@@ -72,7 +72,7 @@ StatusType RemoveSong(void *DS, int artistID, int songID) {
 }
 
 StatusType AddToSongCount(void *DS, int artistID, int songID, int count) {
-    if (DS == NULL || songID < 0 || artistID <= 0 || count <= 0) return INVALID_INPUT;
+    if (DS == NULL || songID <= 0 || artistID <= 0 || count <= 0) return INVALID_INPUT;
     try {
         return ((MusicManager *) DS)->AddToSongCount(artistID, songID, count);
     }
