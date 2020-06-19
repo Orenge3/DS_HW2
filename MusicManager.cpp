@@ -133,6 +133,10 @@ MusicManager::GetArtistBestSong(int artistID, int *songID) {
 StatusType
 MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
     Song rankedSong ;
+//    if (rank==9){ ////////////**************** PRINT DS******/////
+//        allSongsTree->ObserveTree();
+//        artistTable.displayHash();
+//    }
     try{
         rankedSong = allSongsTree->GetRankedObject(rank);
     }catch (AVLTree<Song*,Song>::bad_rank& e){
