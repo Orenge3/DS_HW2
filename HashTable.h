@@ -186,23 +186,33 @@ template<class T>
 T HashTable<T>::find(int itemId, int *rIndex) {
     int index1 = hash1Func(itemId);
     int index2 = hash2Func(itemId);
+    bool visitedFirstCell = false;
     int i = 0;
-    T tempItem = table[(index1 + i * index2) % tableSize];
+    int tempIndex = (index1 + i * index2) % tableSize;
+    T tempItem = table[tempIndex];
     if (tempItem != NULL){
-        while (**tempItem != itemId
-        && ((index1 + i * index2) % tableSize)!= (index1 + index2)){
-            i++;
-            tempItem = table[(index1 + i * index2) % tableSize];
-            if (tempItem == NULL){
+        while (**tempItem != itemId){
+            if (visitedFirstCell && tempIndex == index1){ //if this is not first loop step and index equals to index1, item does not exist.
+                return NULL;
+            }
+            if (!visitedFirstCell){ // this is first time in loop, tempIndex = index1
+                visitedFirstCell = true; //mark first loop step is done
+            }
+            i++; //inc counter
+            tempIndex = (index1 + i * index2) % tableSize; //temp index = (h(x)+i*r(x))mod m
+            tempItem = table[tempIndex]; //advance temp item
+            if (tempItem == NULL){ //item was not put in first location possible so it's not in the table
                 return NULL;
             }
         }
-        if (rIndex != NULL){
-            *rIndex = (index1 + i * index2) % tableSize;
+        if (rIndex != NULL){ // if rIndex was requested, return tempIndex;
+            *rIndex = tempIndex;
         }
-        if (((index1 + i * index2) % tableSize) != (index1 + index2)){
-            return table[(index1 + i * index2) % tableSize];
-        }
+//        if (((index1 + i * index2) % tableSize) != (index1 + index2)){ // not sure what this is
+//            return table[(index1 + i * index2) % tableSize];
+//        }
+        return table[tempIndex];
+
     }
     return NULL;
 }

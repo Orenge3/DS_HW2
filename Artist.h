@@ -81,22 +81,30 @@ private:
     AVLTree<Song,Song>* songStreamTree; //by numOfStreams
 
 public:
-    Artist() = default;
+    Artist() = delete ;
     explicit Artist(int performer):
             artistID(performer){
-        BestSong = new Song();
+        BestSong = NULL;
         songIDTree = new AVLTree<Song,int>();
         songStreamTree = new AVLTree<Song,Song>();
     };
     ~Artist(){
-        delete BestSong;
+        if (BestSong != NULL){
+            delete BestSong;
+        }
         delete songIDTree;
         delete songStreamTree;
     }
     void SetBestSong(Song* songToCheck){
-
+        //oren added check for 0 song, which is initialized while creating artist but seems to be better than all songs with no streams
+        if (this->BestSong == NULL){
+            BestSong = new Song();
+            *BestSong = *songToCheck;
+            return;
+        }
         if(*songToCheck>*(this->BestSong)) {
-            BestSong = songToCheck;
+
+            *BestSong = *songToCheck;
         }
     };
     Song* GetBestSong(){

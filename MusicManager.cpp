@@ -53,8 +53,17 @@ StatusType MusicManager::AddSong(int artistID, int songID) {
     }
     uArtist->GetSongStreamTree()->Insert(*newSong,*newSong);
     this->allSongsTree->Insert(*newSong,newSong);
+    Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(newSong);
-    delete(newSong);
+    if (currentBestSong != NULL){
+        if (*(uArtist->GetBestSong()) == *currentBestSong){
+//            delete (newSong);
+        } else {
+//            delete (currentBestSong);
+        }
+    } else{
+        delete newSong;
+    }
     return SUCCESS;
 }
 
@@ -73,7 +82,14 @@ StatusType MusicManager::RemoveSong(int artistID, int songID) {
     uArtist->GetSongStreamTree()->Delete(*songToDelete);
     uArtist->GetSongIdTree()->Delete(songID);
     this->allSongsTree->Delete(*songToDelete);
-    if(songToDelete==uArtist->GetBestSong()) uArtist->FindNewBestSong();
+    //TODO find solution for deleting best song cause it's not working
+    if(uArtist->GetBestSong()!= NULL){
+        if ( *songToDelete==*uArtist->GetBestSong()){
+            uArtist->FindNewBestSong();
+        }
+    } else{
+        throw;
+    }
     delete(songToDelete);
     return SUCCESS;
 }
@@ -92,11 +108,13 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
     }
 
     uArtist->GetSongStreamTree()->Delete(*songToImprove);
+    uArtist->GetSongIdTree()->Delete(songID); ///** added by oren, need to change value in id tree too.
     allSongsTree->Delete(*songToImprove);
 
     songToImprove->AddNumOfStreams(count);
 
     uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
+    uArtist->GetSongIdTree()->Insert(songID,*songToImprove); ///** added by oren, need to change value in id tree too
     allSongsTree->Insert(*songToImprove,songToImprove);
     Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(songToImprove);
