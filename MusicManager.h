@@ -20,8 +20,6 @@
 
 class MusicManager{
 private:
-//TODO add structures and implement functions
-    // add Hash table of artists
     AVLTree<Song*,Song>* allSongsTree; //by numOfStreams
     HashTable<Artist*> artistTable;
 

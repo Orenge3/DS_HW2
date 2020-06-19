@@ -73,7 +73,6 @@ StatusType MusicManager::RemoveSong(int artistID, int songID) {
     uArtist->GetSongStreamTree()->Delete(*songToDelete);
     uArtist->GetSongIdTree()->Delete(songID);
     this->allSongsTree->Delete(*songToDelete);
-    //TODO find solution for deleting best song cause it's not working
     if(uArtist->GetBestSong()!= NULL){
         if ( *songToDelete==*uArtist->GetBestSong()){
             uArtist->FindNewBestSong();
@@ -107,13 +106,7 @@ StatusType MusicManager::AddToSongCount(int artistID, int songID, int count) {
     uArtist->GetSongStreamTree()->Insert(*songToImprove,*songToImprove);
     uArtist->GetSongIdTree()->Insert(songID,*songToImprove); ///** added by oren, need to change value in id tree too
     allSongsTree->Insert(*songToImprove,songToImprove);
-//    Song* currentBestSong = uArtist->GetBestSong();
     uArtist->SetBestSong(songToImprove);
-//    if (uArtist->GetBestSong() == currentBestSong){
-//        delete (songToImprove);
-//    } else{
-//        delete(currentBestSong);
-//    }
     delete songToImprove;
     return SUCCESS;
 }
@@ -133,10 +126,7 @@ MusicManager::GetArtistBestSong(int artistID, int *songID) {
 StatusType
 MusicManager::GetRecommendedSongInPlace(int rank, int *artistId, int *songId) {
     Song rankedSong ;
-//    if (rank==9){ ////////////**************** PRINT DS******/////
-//        allSongsTree->ObserveTree();
-//        artistTable.displayHash();
-//    }
+
     try{
         rankedSong = allSongsTree->GetRankedObject(rank);
     }catch (AVLTree<Song*,Song>::bad_rank& e){
@@ -156,6 +146,4 @@ void MusicManager::DeleteMusicDatabase() {
         toDelete->GetSongStreamTree()->DeleteTree();
         delete toDelete;
     }
-   //delete(artistTable)
-
 }
