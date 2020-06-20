@@ -73,7 +73,6 @@ StatusType MusicManager::RemoveSong(int artistID, int songID) {
     uArtist->GetSongStreamTree()->Delete(*songToDelete);
     uArtist->GetSongIdTree()->Delete(songID);
     this->allSongsTree->Delete(*songToDelete);
-    //TODO find solution for deleting best song cause it's not working
     if(uArtist->GetBestSong()!= NULL){
         if ( *songToDelete==*uArtist->GetBestSong()){
             uArtist->FindNewBestSong();

@@ -103,9 +103,6 @@ AVL_RESULT AVLTree<T,ID>::Find(ID objectID, T& data) {
 template <class T, class ID>
 ID AVLTree<T,ID>::GetRankedObject(int rank) {
     if (rank<1 || rank>treeSize) throw bad_rank();
-    if(rank == 9){
-        cout<<"here"<<endl;
-    }
     return this->treeEntry->findRankedNodeRecursion(rank, 0, this->treeEntry);
 
 }
